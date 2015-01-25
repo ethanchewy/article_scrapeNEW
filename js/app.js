@@ -27,7 +27,7 @@ document.getElementById('option_picker').addEventListener('change', function (ev
 
 	document.getElementById('articles').innerHTML = '';
 
-	$.getJSON(document.getElementById('option_picker').value, function (data) {
+	$.getJSON(eval(document.getElementById('option_picker').value), function (data) {
 		json = data;
 		for(var i = 0; i < json.results.read_times.length; i++)
 			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input && parseInt(json.results.read_times[i].time.substring(0,2), 10) >= time_input-5)
@@ -37,7 +37,7 @@ document.getElementById('option_picker').addEventListener('change', function (ev
 });
 
 function displayArticles (json, articles) {
-	for (var i = articles.length - 1; i >= 0; i--) {
+	for (var i = 0; i < articles.length; i++) {
 		var title = json.results.titles[articles[i]].title.text;
 		var article_link = json.results.titles[articles[i]].title.href;
 		var read_time = json.results.read_times[articles[i]].time;
