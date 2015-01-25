@@ -7,14 +7,22 @@ document.getElementById('time_input').addEventListener('keypress', function (eve
 		return
 
 	time_input = document.getElementById('time_input').value;
-
-	$.getJSON('http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/6jlkday2?apikey=73388f3a9262f1c93b0116ffed06c96a', function (data) {
-		json = data;
-		for(var i = 0; i < json.results.read_times.length; i++)
-			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input)
-				suggested_articles.push(json.results.read_times[i]);
-		displayArticles(json, suggested_articles);
-	});
+	if(time_input <= 20)
+		$.getJSON('http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/6jlkday2?apikey=73388f3a9262f1c93b0116ffed06c96a', function (data) {
+			json = data;
+			for(var i = 0; i < json.results.read_times.length; i++)
+				if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input)
+					suggested_articles.push(json.results.read_times[i]);
+			displayArticles(json, suggested_articles);
+		});
+	else
+		$.getJSON('http://cors-enabler.herokuapp.com/https://www.kimonolabs.com/api/6jlkday2?apikey=73388f3a9262f1c93b0116ffed06c96a', function (data) {
+			json = data;
+			for(var i = 0; i < json.results.read_times.length; i++)
+				if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input)
+					suggested_articles.push(json.results.read_times[i]);
+			displayArticles(json, suggested_articles);
+		});
 });
 
 function displayArticles (json, articles) {
@@ -25,6 +33,7 @@ function displayArticles (json, articles) {
 
 		var article_link_elem = document.createElement('a');
 		article_link_elem.href = article_link;
+		article_link_elem.setAttribute('target', '_blank');
 
 		var title_elem = document.createElement('h2');
 		title_elem.innerHTML = title;
@@ -34,7 +43,11 @@ function displayArticles (json, articles) {
 		var read_time_elem = document.createElement('small');
 		read_time_elem.innerHTML = read_time;
 
-		document.getElementById('articles').appendChild(article_link_elem);
-		document.getElementById('articles').appendChild(read_time_elem);
+		var row = document.createElement('div');
+		row.className = 'row';
+		row.appendChild(article_link_elem);
+		row.appendChild(read_time_elem);
+
+		document.getElementById('articles').appendChild(row);
 	};
 }
