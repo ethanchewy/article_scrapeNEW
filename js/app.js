@@ -1,0 +1,40 @@
+var time_input = 0;
+var suggested_articles = [];
+var json;
+
+document.getElementById('time_input').addEventListener('keypress', function (event) {
+	if(event.keyCode !== 13)
+		return
+
+	time_input = document.getElementById('time_input').value;
+
+	$.getJSON('http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/6jlkday2?apikey=73388f3a9262f1c93b0116ffed06c96a', function (data) {
+		json = data;
+		for(var i = 0; i < json.results.read_times.length; i++)
+			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input)
+				suggested_articles.push(json.results.read_times[i]);
+		displayArticles(json, suggested_articles);
+	});
+});
+
+function displayArticles (json, articles) {
+	for (var i = articles.length - 1; i >= 0; i--) {
+		var title = json.results.titles[i].title.text;
+		var article_link = json.results.titles[i].title.href;
+		var read_time = json.results.read_times[i].time;
+
+		var article_link_elem = document.createElement('a');
+		article_link_elem.href = article_link;
+
+		var title_elem = document.createElement('h2');
+		title_elem.innerHTML = title;
+
+		article_link_elem.appendChild(title_elem);
+
+		var read_time_elem = document.createElement('small');
+		read_time_elem.innerHTML = read_time;
+
+		document.getElementById('articles').appendChild(article_link_elem);
+		document.getElementById('articles').appendChild(read_time_elem);
+	};
+}
