@@ -12,8 +12,8 @@ document.getElementById('time_input').addEventListener('keypress', function (eve
 		return
 
 	time_input = document.getElementById('time_input').value;
-	document.getElementById('articles').innerHTML = '';
-	$.getJSON(staffpick_api, function (data) {
+	
+	$.getJSON(eval(document.getElementById('option_picker').value), function (data) {
 		json = data;
 		for(var i = 0; i < json.results.read_times.length; i++)
 			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input && parseInt(json.results.read_times[i].time.substring(0,2), 10) >= time_input-5)
@@ -25,8 +25,6 @@ document.getElementById('time_input').addEventListener('keypress', function (eve
 document.getElementById('option_picker').addEventListener('change', function (event) {
 	time_input = document.getElementById('time_input').value;
 
-	document.getElementById('articles').innerHTML = '';
-
 	$.getJSON(eval(document.getElementById('option_picker').value), function (data) {
 		json = data;
 		for(var i = 0; i < json.results.read_times.length; i++)
@@ -37,6 +35,7 @@ document.getElementById('option_picker').addEventListener('change', function (ev
 });
 
 function displayArticles (json, articles) {
+	document.getElementById('articles').innerHTML = '';
 	for (var i = 0; i < articles.length; i++) {
 		var title = json.results.titles[articles[i]].title.text;
 		var article_link = json.results.titles[articles[i]].title.href;
@@ -61,4 +60,5 @@ function displayArticles (json, articles) {
 
 		document.getElementById('articles').appendChild(row);
 	};
+	suggested_articles = [];
 }
