@@ -11,16 +11,16 @@ document.getElementById('time_input').addEventListener('keypress', function (eve
 		json = data;
 		for(var i = 0; i < json.results.read_times.length; i++)
 			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input)
-				suggested_articles.push(json.results.read_times[i]);
+				suggested_articles.push(i);
 		displayArticles(json, suggested_articles);
 	});
 });
 
 function displayArticles (json, articles) {
 	for (var i = articles.length - 1; i >= 0; i--) {
-		var title = json.results.titles[i].title.text;
-		var article_link = json.results.titles[i].title.href;
-		var read_time = json.results.read_times[i].time;
+		var title = json.results.titles[articles[i]].title.text;
+		var article_link = json.results.titles[articles[i]].title.href;
+		var read_time = json.results.read_times[articles[i]].time;
 
 		var article_link_elem = document.createElement('a');
 		article_link_elem.href = article_link;
