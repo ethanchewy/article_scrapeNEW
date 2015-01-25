@@ -2,15 +2,35 @@ var time_input = 0;
 var suggested_articles = [];
 var json;
 
+var staffpick_api = 'http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/6jlkday2?apikey=73388f3a9262f1c93b0116ffed06c96a';
+var culture_api = 'http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/cr8sxmfu?apikey=73388f3a9262f1c93b0116ffed06c96a';
+var tech_api = 'http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/82ogjpbu?apikey=73388f3a9262f1c93b0116ffed06c96a';
+var humor_api = 'http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/dfhv6ko4?apikey=73388f3a9262f1c93b0116ffed06c96a';
+var design_api = 'http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/4zyez8ri?apikey=73388f3a9262f1c93b0116ffed06c96a';
 document.getElementById('time_input').addEventListener('keypress', function (event) {
 	if(event.keyCode !== 13)
 		return
 
 	time_input = document.getElementById('time_input').value;
-	$.getJSON('http://cors-enabler.herokuapp.com/http://www.kimonolabs.com/api/6jlkday2?apikey=73388f3a9262f1c93b0116ffed06c96a', function (data) {
+	document.getElementById('articles').innerHTML = '';
+	$.getJSON(staffpick_api, function (data) {
 		json = data;
 		for(var i = 0; i < json.results.read_times.length; i++)
-			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input)
+			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input && parseInt(json.results.read_times[i].time.substring(0,2), 10) >= time_input-5)
+				suggested_articles.push(i);
+		displayArticles(json, suggested_articles);
+	});
+});
+
+document.getElementById('option_picker').addEventListener('change', function (event) {
+	time_input = document.getElementById('time_input').value;
+
+	document.getElementById('articles').innerHTML = '';
+
+	$.getJSON(document.getElementById('option_picker').value, function (data) {
+		json = data;
+		for(var i = 0; i < json.results.read_times.length; i++)
+			if(parseInt(json.results.read_times[i].time.substring(0,2), 10) <= time_input && parseInt(json.results.read_times[i].time.substring(0,2), 10) >= time_input-5)
 				suggested_articles.push(i);
 		displayArticles(json, suggested_articles);
 	});
