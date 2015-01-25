@@ -26,7 +26,7 @@ function displayArticles (json, articles) {
 		article_link_elem.href = article_link;
 		article_link_elem.setAttribute('target', '_blank');
 
-		var title_elem = document.createElement('h2');
+		var title_elem = document.createElement('span');
 		title_elem.innerHTML = title;
 
 		article_link_elem.appendChild(title_elem);
