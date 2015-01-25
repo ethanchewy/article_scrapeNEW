@@ -13,9 +13,10 @@ body {
 	height: 100%;
 }
 .navbar{
+	z-index: 3;
 	background-color: #f57c00;
 	border-radius:0px;
-	box-shadow: 5px 9px 11px 32px #dc6f00;
+	box-shadow: 3px 5px 5px #dc6f00;
 	height: 40px;
 	margin:0px;
 	border:0px;
